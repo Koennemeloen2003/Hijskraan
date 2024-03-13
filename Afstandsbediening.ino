@@ -142,8 +142,8 @@ void updateKatGear(){
 //Update het persentage van de battery
 void batteryUpdate(){
   currentLevel=analogRead(battery); //leest de analoge waarde vanaf de spanningsdeler in
-  if (currentLevel -3165 > 0) {     // kijken of het persentage hoger wordt dan 0%
-    batteryPercent= ((currentLevel-3165)*100/(4095-3165));  //rekent het persentage van de battery uit
+  if (currentLevel -3164 > 0) {     // kijken of het persentage hoger wordt dan 0%
+    batteryPercent= ((currentLevel-3164)*100/(4095-3164));  //rekent het persentage van de battery uit
   }
   else{
     batteryPercent = 0;
