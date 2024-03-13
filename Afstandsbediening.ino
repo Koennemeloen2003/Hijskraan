@@ -159,7 +159,7 @@ void screenUpdate(){
 
   oled.setCursor(4, 0);        // position to display
   oled.print("Katten: "); // text to display
-  oled.println(analogRead(katGear));
+  oled.println(katGear);
 
   oled.setCursor(4, 8);        // position to display
   oled.print("Lieren"); // text to display
