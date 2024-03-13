@@ -51,25 +51,25 @@ void setup() {
   pinMode(horLeft, INPUT);
   pinMode(battery, INPUT);
 
-  Serial.begin(9600);
+  Serial.begin(9600); //start seriele monitor
 
     // initialize OLED display with address 0x3C for 128x64
   if (!oled.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    Serial.println(F("SSD1306 allocation failed"));
+    Serial.println(F("SSD1306 allocation failed")); // print een error uit als het upzette van het schermpje niet lukt
     while (true);
   }
 
-  delay(2000);         // wait for initializing
-  oled.clearDisplay(); // clear display
-  oled.setTextSize(0.1);          // text size
+  delay(2000);                  // wait for initializing
+  oled.clearDisplay();          // clear display
+  oled.setTextSize(0.1);        // text size
   oled.setTextColor(WHITE);     // text color
   oled.display();               // show on OLED
 
 }
-
+// Leest de analoge waarde van de joystick uit om zo te bepalen in welke versnelling de lier zit
 void updateLierGear(){
-    int temp = analogRead(vertLeft)/4095*100;
-    switch (temp){
+    int temp = analogRead(vertLeft)*100/4095; // verandert de analoge input van de joystick naar een persentage
+    switch (temp){                            // kijkt in welke versnelling de lier zit op bassis van het persentage
       case 0 ... 15:{
         lierGear = -3;
       }
@@ -102,9 +102,11 @@ void updateLierGear(){
     }
 }
 
+
+// Leest de analoge waarde van de joystick uit om zo te bepalen in welke versnelling de kat zit
 void updateKatGear(){
-    int temp = (analogRead(horRight)*100)/4095;
-    switch (temp){
+    int temp = (analogRead(horRight)*100)/4095;     // verandert de analoge input van de joystick naar een persentage
+    switch (temp){                                  // kijkt in welke versnelling de kat zit op bassis van het persentage
       case 0 ... 15:{
         katGear = -3;
       }
@@ -137,15 +139,16 @@ void updateKatGear(){
     }
 }
 
+//Update het persentage van de battery
 void batteryUpdate(){
-  currentLevel=analogRead(battery);
-  if (currentLevel -3165 > 0) {
-    batteryPercent= ((currentLevel-3165)/(4095-3165))*100;
+  currentLevel=analogRead(battery); //leest de analoge waarde vanaf de spanningsdeler in
+  if (currentLevel -3165 > 0) {     // kijken of het persentage hoger wordt dan 0%
+    batteryPercent= ((currentLevel-3165)*100/(4095-3165));  //rekent het persentage van de battery uit
   }
   else{
     batteryPercent = 0;
   }
-  if (batteryPercent < 25){
+  if (batteryPercent < 25){       // als het persentage lager is dan 25 procent is dan gaat hij is lege battery modes
     batteryLow = true;
   }
   else{
@@ -153,6 +156,7 @@ void batteryUpdate(){
   }
 }
 
+//update het scherm met de nieuwe informatie
 void screenUpdate(){
 
   oled.clearDisplay(); // clear display
@@ -171,35 +175,35 @@ void screenUpdate(){
 
   if (servoOpen == true){
     oled.setCursor(100, 0);        // position to display
-    oled.println("Open"); // text to display
+    oled.println("Open");          // text to display
   }
   else{
-    oled.setCursor(90,0);
-    oled.println("closed");
+    oled.setCursor(90,0);         // position to display
+    oled.println("closed");       // text to display
   }
-  oled.display();
-  screenTimer= millis();
+  oled.display();                 // stuurt de bovenstaande info naar het schermpje
+  screenTimer= millis();          // pakt de huidige tijd
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(screenTimer + 500 <= millis()) {
-    batteryUpdate();
-    screenUpdate();
+  if(screenTimer + 500 <= millis()) {     //vergetlijkt de huidige tijd met de laatste keer dat het scherm geupdate is
+    batteryUpdate();                      // roept de functie om het batterypercentage te hernieuwen
+    screenUpdate();                       // roept de functie aan om het scherm te hernieuwen
   }
 
-  if(batteryLow == true){
+  if(batteryLow == true){                 // zet de rooie led aan als de battarij bijna leeg is
     digitalWrite(redLed, HIGH);
   }
-  if(buttonClose == HIGH){
+  if(buttonClose == HIGH){                // sluit de grijper als de knop ingedrukt is
     servoOpen= false;
   }
-  if (buttonOpen == HIGH){
+  if (buttonOpen == HIGH){                // opent de servo als de knop ingedrukt wordt
     servoOpen = true;
   }
-  if(buttonStop == HIGH){
+  if(buttonStop == HIGH){                 // stopt de loop als de noodstop ingedrukt wordt
     exit(0);
   }
-  updateLierGear();
-  updateKatGear();
+  updateLierGear();                     // roept de functie aan om de versnelling van de lier te hernieuwen
+  updateKatGear();                      // roept de functie aan om de versnelling van de kat te hernieuwen
 }
