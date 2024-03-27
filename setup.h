@@ -56,6 +56,7 @@ int katGear;
 int servoHoek;
 bool noodStop = false;
 unsigned long stoptimer;
+unsigned long sendTimer=0;
 
 void portSetup(){
   pinMode(buttonOpen, INPUT);

@@ -16,7 +16,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (screenTimer + 500 > millis()){
+  if (screenTimer + 500 < millis()){
     screenUpdate();
     batteryUpdate();
     setBatteryLED(batteryLow);
@@ -30,7 +30,10 @@ void loop() {
   updateKatGear();
   updateLierGear();
   eStopButton();
-  updateSendValues();
-  connectionTest();
-  SendData();
+  if (sendTimer +250 < millis() ){
+    updateSendValues();
+    connectionTest();
+    SendData();
+  }
+
 }

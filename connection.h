@@ -1,3 +1,4 @@
+#include "esp32-hal.h"
 #ifndef connection_h
 #define connection_h
 
@@ -75,6 +76,8 @@ void  SendData(){
   Serial.printf("JoystickR      value: %d \n", myData.f);
   Serial.printf("Spare          value: %d \n", myData.g);
   Serial.println("---------------");
+
+  sendTimer= millis();
 
 }
 
