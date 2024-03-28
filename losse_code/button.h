@@ -1,25 +1,27 @@
+#include "esp32-hal.h"
+#include "esp32-hal-gpio.h"
 #ifndef button_h
 #define button_h
 
 #include "setup.h"
+#include "screen.h"
 
    void eStopButton(){
-    if(buttonStop == HIGH && noodStop == false){                 // stopt de loop als de noodstop ingedrukt wordt
-    myData.E_STOP = 1;
-    noodStop = true;
-    stoptimer = millis();
+    if(myData.E_STOP < 1){                 // stopt de loop als de noodstop ingedrukt wordt
+      myData.E_STOP = 1;
+      SendData();
+      stoptimer = millis();
+      eStopScreen();
+      while (myData.E_STOP > 0) {
+        eStopScreen();
+        Serial.println("E_stop mode");
+        if(digitalRead(buttonStop) == HIGH && stoptimer + 10000 < millis()){
+          myData.E_STOP = 0;
+      }
+      }
     }
-    else if (buttonStop == HIGH && noodStop == true && stoptimer + 2000 >= millis()){
-    myData.E_STOP = 0;
-    noodStop = false;
-    }
-   }   
 
-  void servoOpen(){
-    servoHoek = 1000;
-  }
+   }
 
-  void servoClose(){
-    servoHoek = 2000;
-  }
+
 #endif

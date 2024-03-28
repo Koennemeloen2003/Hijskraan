@@ -25,28 +25,29 @@ esp_now_peer_info_t peerInfo;
 #define oledReset 26
 
 //button Pins
-#define buttonOpen 5
-#define buttonClose 19
-#define buttonStop 13 
+#define buttonOpen 35
+#define buttonClose 34
+#define buttonStop 12 
 
 //led pins
-#define redLed 4
+#define redLed 13
 #define ledGreen 15
 
 //Joysticks
-#define vertRight 32
+#define vertRight 21
 #define horRight 33
-#define vertLeft 35
-#define horLeft 34
+#define vertLeft 36
+#define horLeft 39
 
 //Miscellaneous 
 #define battery 14
 
 //Variables
 unsigned long screenTimer= 0;
+unsigned long stoptimer;
+unsigned long sendTimer;
 float batteryPercent;
 bool batteryLow;
-float currentLevel;
 int maxVDeadzone;
 int minVDeadzone;
 int maxHDeadzone;
@@ -54,9 +55,7 @@ int minHDeadzone;
 int lierGear;
 int katGear;
 int servoHoek;
-bool noodStop = false;
-unsigned long stoptimer;
-unsigned long sendTimer=0;
+
 
 //setting all pins to in- or output
 void portSetup(){

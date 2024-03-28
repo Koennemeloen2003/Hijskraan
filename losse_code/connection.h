@@ -8,7 +8,7 @@
 #include "led.h"
 
 //setting the addres to communicate with
-uint8_t broadcastAddress[] = {0xC8,0xC9,0xA3,0xFD,0x02,0x40};
+uint8_t broadcastAddress[] = {0x80,0x7D,0x3A,0xFD,0xE5,0xAB};
 
 //turing on the green led if connection is succesful
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
@@ -97,4 +97,5 @@ void connectionTest(){
     Serial.println("Error sending the data");
   }
 }
+
 #endif
