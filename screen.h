@@ -3,20 +3,20 @@
 #ifndef screen_h
 #define screen_h
 
-#include <Adafruit_SSD1306.h>
-#include <splash.h>
-#include <Wire.h>
+#include <Wire.h> //I2C communication library
+#include <Adafruit_GFX.h> // supports various OLED graphics functions
+#include <Adafruit_SSD1305.h> // OLED 128x32 display driver named SSD1305
 #include "setup.h"
 #include "joystick.h"
 
-Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+Adafruit_SSD1305 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 
 void screenSetup(){
     // initialize OLED display with address 0x3C for 128x64
-  if (!oled.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    Serial.println(F("SSD1306 allocation failed")); // print een error uit als het upzette van het schermpje niet lukt
-    while (true);
+  if ( ! oled.begin(0x3C) ) {
+    Serial.println("Unable to initialize OLED");
+    while (1) yield(); // if we get here, then there is an OLED problem
   }
 
   delay(2000);                  // wait for initializing
@@ -39,7 +39,7 @@ void screenUpdate(){
   oled.print("Lieren: "); // text to display
   oled.println(lierGear);// text to display
 
-  oled.setCursor(100, 8);        // position to display
+  oled.setCursor(90, 8);        // position to display
   oled.print(batteryPercent);// text to display  
   oled.println("%");// text to display
 
@@ -48,7 +48,7 @@ void screenUpdate(){
     oled.println("Open");          // text to display
   }
   else if (servoHoek >1500) {
-    oled.setCursor(90,0);         // position to display
+    oled.setCursor(80,0);         // position to display
     oled.println("Closed");       // text to display
   }
   

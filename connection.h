@@ -8,8 +8,8 @@
 #include "led.h"
 
 //setting the addres to communicate with
-uint8_t broadcastAddress[] = {0xE4,0x65,0xB8,0x20,0x94,0xA8};
-//uint8_t broadcastAddress[] = {0xC8,0xC9,0xA3,0xFD,0x02,0x40};
+//uint8_t broadcastAddress[] = {0xE4,0x65,0xB8,0x20,0x94,0xA8};
+uint8_t broadcastAddress[] = {0xC8,0xC9,0xA3,0xFD,0x02,0x40};
 
 
 //turing on the green led if connection is succesful
@@ -63,13 +63,6 @@ void updateSendValues() {
   myData.GRIPPER = servoHoek;
   myData.CAT = katGear;
   myData.LIFT = lierGear;
-  myData.e += 1;
-  myData.f -= 3;
-  myData.g *= 2;
-  if (myData.e > 9999) myData.e = 255;  // overflow protection
-  if (myData.f < -999)  myData.f = 2;    // overflow protection
-  if (myData.g > 99999) myData.g = 2;    // overflow protection
-
 }
 
 //sinding the data to the slave module
